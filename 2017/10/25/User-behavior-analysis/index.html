@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="推荐算法, 个性化，机器学习，项目实战，实时处理," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基于知名手机厂商线上项目需求进行讲解，快速提升Spark项目经验，解决手机应用实时分析、实时查询。涵盖大数据实时计算一体化的处理流程，包括Flume，Kafka，spark-streaming和Hbase等。 链接详情：http://www.dajiangtai.com/course/20.do">
+<meta name="keywords" content="推荐算法, 个性化，机器学习，项目实战，实时处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark企业级实战：知名手机厂商用户行为实时分析系统">
+<meta property="og:url" content="http://yoursite.com/2017/10/25/User-behavior-analysis/index.html">
+<meta property="og:site_name" content="BigData &amp;&amp; AI">
+<meta property="og:description" content="基于知名手机厂商线上项目需求进行讲解，快速提升Spark项目经验，解决手机应用实时分析、实时查询。涵盖大数据实时计算一体化的处理流程，包括Flume，Kafka，spark-streaming和Hbase等。 链接详情：http://www.dajiangtai.com/course/20.do">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/course2-shouji.png">
+<meta property="og:image" content="http://yoursite.com/images/wechat.png">
+<meta property="og:updated_time" content="2017-11-04T01:22:18.898Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark企业级实战：知名手机厂商用户行为实时分析系统">
+<meta name="twitter:description" content="基于知名手机厂商线上项目需求进行讲解，快速提升Spark项目经验，解决手机应用实时分析、实时查询。涵盖大数据实时计算一体化的处理流程，包括Flume，Kafka，spark-streaming和Hbase等。 链接详情：http://www.dajiangtai.com/course/20.do">
+<meta name="twitter:image" content="http://yoursite.com/images/course2-shouji.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/25/User-behavior-analysis/"/>
+
+
+
+
+
+  <title>Spark企业级实战：知名手机厂商用户行为实时分析系统 | BigData && AI</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BigData && AI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人工智能和大数据自学课程</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/25/User-behavior-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="联系qq:2468847541 或者微信(BigDataAI007)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigData && AI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spark企业级实战：知名手机厂商用户行为实时分析系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-25T20:12:59+08:00">
+                2017-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/人工智能之推荐算法/" itemprop="url" rel="index">
+                    <span itemprop="name">人工智能之推荐算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>基于知名手机厂商线上项目需求进行讲解，快速提升Spark项目经验，解决手机应用实时分析、实时查询。涵盖大数据实时计算一体化的处理流程，包括Flume，Kafka，spark-streaming和Hbase等。<br><img src="../../../../images/course2-shouji.png" alt="使用本地图片"></p>
+<p><strong>链接详情：<a href="http://www.dajiangtai.com/course/20.do" target="_blank" rel="external">http://www.dajiangtai.com/course/20.do</a></strong></p>
+<a id="more"></a>
+<h1 id="1-课程介绍"><a href="#1-课程介绍" class="headerlink" title="1. 课程介绍"></a>1. 课程介绍</h1><p>1、基于知名手机厂商线上项目需求进行讲解，快速提升Spark项目经验，解决手机应用实时分析、实时查询需求。</p>
+<p>2、涵盖大数据实时计算一体化的处理流程，包括Flume采集不同来源不同类型的日志（用户行为日志，Nginx日志等等），Kafka消息队列缓存数据并提供高并发的处理以及供后续多种系统消费数据，spark-streaming根据业务需求实时计算数据，Hbase用来存储大数据量和低延迟的访问。</p>
+<p>3、特别注重企业级Spark项目开发的系统性、完整性，拒绝小demo小案例，提升视野与高度。</p>
+<h1 id="2-课程视频及源码获取联系方式"><a href="#2-课程视频及源码获取联系方式" class="headerlink" title="2. 课程视频及源码获取联系方式"></a>2. 课程视频及源码获取联系方式</h1><p>收集整理了人工智能和大数据方面的项目实战类的视频教程，需要视频请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系，可以帮您拿到课程。</p>
+<p><img src="../../../../images/wechat.png" alt="使用本地图片"></p>
+<h2 id="2-1-项目总体介绍和背景"><a href="#2-1-项目总体介绍和背景" class="headerlink" title="2.1 项目总体介绍和背景"></a>2.1 项目总体介绍和背景</h2><p><strong>项目总体介绍和背景</strong></p>
+<p>1、项目背景</p>
+<p>2、总体业务要求</p>
+<p>3、难点分析</p>
+<p><strong>技术框架</strong></p>
+<p>a.大数据工具的选择，包括HDFS、HIVE、SPARK、KAFKA、HBASE、PHOENIX、ZEPPELIN等工具。</p>
+<p>b.数据实时处理阶段技术拓展Storm</p>
+<p><strong>系统要求以及开发的重点和难点</strong><br>Java，hadoop YARN，Flume，Kafka，Spark-streaming，Hbase</p>
+<p>Hadoop YARN：分布式文件存储系统、资源管理平台，负责spark-streaming的文件存储和资源分配</p>
+<p>Flume：实时收集、过滤、聚合各种日志数据</p>
+<p>Kafka：分布式高并发消息队列，负责缓存Flume采集的数据并为下游的各种计算提供高并发的数据处理</p>
+<p>Spark-streaming：基于内存的高吞吐量实时流式计算</p>
+<p>Hbase：亿级行百万列并可毫秒级查询的数据库，可快速查询我们的计算数据</p>
+<h2 id="2-2-数据流处理"><a href="#2-2-数据流处理" class="headerlink" title="2.2 数据流处理"></a>2.2 数据流处理</h2><p>1、数据实时处理阶段技术拓展Storm</p>
+<p>2、Spark Streaming实用项目解决方案</p>
+<p>3、Spark Streaming项目中性能调优</p>
+<h2 id="2-3-总体要求"><a href="#2-3-总体要求" class="headerlink" title="2.3 总体要求"></a>2.3 总体要求</h2><p>1、业务系统很多，如何实时聚合日志并对业务侵入性很小，这么多的系统的日志格式肯定都不一样，统一聚合后如何区分日志；</p>
+<p>2、数据量很大如何达到高并发，让处理速度远高于写入速度</p>
+<p>3、如何分布和处理数据才能对后续的系统减少压力，比如处理好的数据写入hbase，如何减少写次数；</p>
+<p>4、我们的系统是大数据和业务系统紧密结合的，那么在大数据大量用户的情况下如何做到低延时；</p>
+<h2 id="2-4-模型建立及整体解决方案"><a href="#2-4-模型建立及整体解决方案" class="headerlink" title="2.4 模型建立及整体解决方案"></a>2.4 模型建立及整体解决方案</h2><p>1、业务系统很多，如何实时聚合日志并对业务侵入性很小，这么多的系统的日志格式肯定都不一样，统一聚合后如何区分日志；</p>
+<p>2、数据量很大如何达到高并发，让处理速度远高于写入速度</p>
+<p>3、如何分布和处理数据才能对后续的系统减少压力，比如处理好的数据写入hbase，如何减少写次数；</p>
+<p>4、我们的系统是大数据和业务系统紧密结合的，那么在大数据大量用户的情况下如何做到低延时；</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/推荐算法-个性化，机器学习，项目实战，实时处理/" rel="tag"># 推荐算法, 个性化，机器学习，项目实战，实时处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/25/recommended-system-algorithm/" rel="next" title="企业级实战：Spark离线和实时电影推荐系统">
+                <i class="fa fa-chevron-left"></i> 企业级实战：Spark离线和实时电影推荐系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/25/Spark-high-salary-employment-course/" rel="prev" title="Spark从入门到精通：Spark高薪就业课辅导课程">
+                Spark从入门到精通：Spark高薪就业课辅导课程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="联系qq:2468847541 或者微信(BigDataAI007)" />
+            
+              <p class="site-author-name" itemprop="name">联系qq:2468847541 或者微信(BigDataAI007)</p>
+              <p class="site-description motion-element" itemprop="description">收集整理了IT方面的视频教程，需要视频课程请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-课程介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 课程介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-课程视频及源码获取联系方式"><span class="nav-number">2.</span> <span class="nav-text">2. 课程视频及源码获取联系方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-项目总体介绍和背景"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 项目总体介绍和背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-数据流处理"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 数据流处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-总体要求"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 总体要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-模型建立及整体解决方案"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 模型建立及整体解决方案</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">联系qq:2468847541 或者微信(BigDataAI007)</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

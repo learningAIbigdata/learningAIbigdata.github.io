@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="推荐算法, 个性化，机器学习," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基于知名视频网站电影推荐项目进行讲解，快速提升Spark 机器学习推荐项目经验。本课程从Spark离线推荐和实时推荐两个方面剖析电影推荐项目，使用技术包含 hadoop、hive、spark、kafka、zookeeper、hbase、phoenix、ZEPPELIN等 链接详情：http://www.dajiangtai.com/course/56.do">
+<meta name="keywords" content="推荐算法, 个性化，机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="企业级实战：Spark离线和实时电影推荐系统">
+<meta property="og:url" content="http://yoursite.com/2017/10/25/recommended-system-algorithm/index.html">
+<meta property="og:site_name" content="BigData &amp;&amp; AI">
+<meta property="og:description" content="基于知名视频网站电影推荐项目进行讲解，快速提升Spark 机器学习推荐项目经验。本课程从Spark离线推荐和实时推荐两个方面剖析电影推荐项目，使用技术包含 hadoop、hive、spark、kafka、zookeeper、hbase、phoenix、ZEPPELIN等 链接详情：http://www.dajiangtai.com/course/56.do">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/course1-recsys.png">
+<meta property="og:image" content="http://yoursite.com/images/wechat.png">
+<meta property="og:updated_time" content="2017-11-03T23:56:03.896Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="企业级实战：Spark离线和实时电影推荐系统">
+<meta name="twitter:description" content="基于知名视频网站电影推荐项目进行讲解，快速提升Spark 机器学习推荐项目经验。本课程从Spark离线推荐和实时推荐两个方面剖析电影推荐项目，使用技术包含 hadoop、hive、spark、kafka、zookeeper、hbase、phoenix、ZEPPELIN等 链接详情：http://www.dajiangtai.com/course/56.do">
+<meta name="twitter:image" content="http://yoursite.com/images/course1-recsys.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/25/recommended-system-algorithm/"/>
+
+
+
+
+
+  <title>企业级实战：Spark离线和实时电影推荐系统 | BigData && AI</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BigData && AI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人工智能和大数据自学课程</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/25/recommended-system-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="联系qq:2468847541 或者微信(BigDataAI007)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigData && AI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">企业级实战：Spark离线和实时电影推荐系统</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-25T20:12:59+08:00">
+                2017-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/人工智能之推荐算法/" itemprop="url" rel="index">
+                    <span itemprop="name">人工智能之推荐算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>基于知名视频网站电影推荐项目进行讲解，快速提升Spark 机器学习推荐项目经验。本课程从Spark离线推荐和实时推荐两个方面剖析电影推荐项目，使用技术包含 hadoop、hive、spark、kafka、zookeeper、hbase、phoenix、ZEPPELIN等<br><img src="../../../../images/course1-recsys.png" alt="使用本地图片"></p>
+<p><strong>链接详情：<a href="http://www.dajiangtai.com/course/56.do" target="_blank" rel="external">http://www.dajiangtai.com/course/56.do</a></strong></p>
+<a id="more"></a>
+<h1 id="1-课程介绍"><a href="#1-课程介绍" class="headerlink" title="1. 课程介绍"></a>1. 课程介绍</h1><p>推荐系统是电商和内容型app网站生存的重要手段，是以重新组织物品分类和聚类方式形成的人工智能系统。亚马逊的商品推荐、优酷的视频推荐，都是推荐系统的应用实例。每一个具体的应用场景中推荐系统表现形式有所不同，但是最终都是以增加内容、商品曝光度为前提的。<br>推荐系统根据每一个用户的行为和喜好，找到这个用户未来可能喜欢和购买的商品或者是物品。它使得内容、电商两大产业减少了大量的人工编辑推荐的工作，只需要用一些简单或者深入的算法，就可以达到很好的效果。</p>
+<p>课程内容：<br>本课程包括推荐引擎、推荐算法、推荐环境三大版块，课程中会讲解在线教育、视频网站、电商购物、阅读网站四个领域的知识点和实战案例。</p>
+<h1 id="2-课程视频及源码获取联系方式"><a href="#2-课程视频及源码获取联系方式" class="headerlink" title="2. 课程视频及源码获取联系方式"></a>2. 课程视频及源码获取联系方式</h1><p>收集整理了人工智能和大数据方面的项目实战类的视频教程，需要视频请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系，可以帮您拿到课程。</p>
+<p><img src="../../../../images/wechat.png" alt="使用本地图片"></p>
+<h2 id="2-1-项目总体介绍和背景"><a href="#2-1-项目总体介绍和背景" class="headerlink" title="2.1 项目总体介绍和背景"></a>2.1 项目总体介绍和背景</h2><p><strong>项目总体介绍和背景</strong></p>
+<p>a.基于Spark流行的大数据工具，开发一套电影推荐系统，让大家体验到如何实现自己的“猜你喜欢”的推荐。 很多电商和购物网站以及一些手机上的应用，猜你喜欢已经成为了必备功能，它对网站的销售有着很明显的刺激作用。</p>
+<p><strong>技术框架</strong></p>
+<p>a.大数据工具的选择，包括HDFS、HIVE、SPARK、KAFKA、HBASE、PHOENIX、ZEPPELIN等工具。<br>b.推荐的实时性，包括实时推荐和离线推荐。</p>
+<p><strong>系统要求以及开发的重点和难点</strong><br>a. 完成一个推荐系统，为每个用户产生合适的电影产品的推荐结果。并且满足在性能，可靠性上的要求。<br>b. 实时数据的产生以及打到kafka消息队列中。<br>c. 对数据特征的发掘、清洗和加工。<br>d. 产生推荐系统的模型，并在多个模型中选择最佳的模型。<br>e. 解决整个系统中的性能问题。</p>
+<h2 id="2-2-数据特点分析、清洗、加工成表和数据集的准备"><a href="#2-2-数据特点分析、清洗、加工成表和数据集的准备" class="headerlink" title="2.2 数据特点分析、清洗、加工成表和数据集的准备"></a>2.2 数据特点分析、清洗、加工成表和数据集的准备</h2><p>a. 介绍各个文件的作用以及用户和电影的各个属性</p>
+<p>b. 分析数据区间、特点</p>
+<p>c. 探讨开发的思路</p>
+<p>a. 构建RDD</p>
+<p>b. 定义各个表对应的case class</p>
+<p>c. 将RDD转换成DATAFRAME</p>
+<p>d. 在sparksql中创建对应的表</p>
+<p>e. 通过sparksql做一些查询来验证</p>
+<h2 id="2-3-离线推荐模块的开发"><a href="#2-3-离线推荐模块的开发" class="headerlink" title="2.3 离线推荐模块的开发"></a>2.3 离线推荐模块的开发</h2><p>1、数据加工，整理出rating    </p>
+<p>a. 通过一系列的数据转换形成rating数据</p>
+<p>2、依据ratings构建模型</p>
+<pre><code>a. 构建模型
+
+
+3、理论补充    a. ALS算法的介绍
+4、最佳参数的寻找    a. 评估模型好坏的指标RMSE
+b. 模型相关的参数
+c. 如何寻找最好的模型
+5、离线推荐    a. 依据输入的某个用户ID，加载模型，产生推荐的电影结果，写入到数据库中
+b. 依据输入的某个电影，加载模型，给出可能喜欢的用户
+</code></pre><h2 id="2-3-Kafka-spark-Streaming实时推荐模块的开发"><a href="#2-3-Kafka-spark-Streaming实时推荐模块的开发" class="headerlink" title="2.3 Kafka+spark Streaming实时推荐模块的开发"></a>2.3 Kafka+spark Streaming实时推荐模块的开发</h2><pre><code>1、构建实时数据流    a. 将ratings表里的数据通过模拟的方式打入到kafka的消息队列中。
+2、在sparkstreaming中接收kafka消息队列中的数据，开发实时数据处理模块    a. 在sparkstreaming通过direct的方式来接收kakfa中的数据，然后加载已经存在的模型，实时生成推荐结果，写入到数据库中。
+3、新用户或者未登录用户    a. 推荐策略的推想，以及实现用户的推荐。
+</code></pre>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/推荐算法-个性化，机器学习/" rel="tag"># 推荐算法, 个性化，机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/25/traffic-project/" rel="next" title="Spark企业级实战项目：道路交通实时流量监控项目">
+                <i class="fa fa-chevron-left"></i> Spark企业级实战项目：道路交通实时流量监控项目
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/25/User-behavior-analysis/" rel="prev" title="Spark企业级实战：知名手机厂商用户行为实时分析系统">
+                Spark企业级实战：知名手机厂商用户行为实时分析系统 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="联系qq:2468847541 或者微信(BigDataAI007)" />
+            
+              <p class="site-author-name" itemprop="name">联系qq:2468847541 或者微信(BigDataAI007)</p>
+              <p class="site-description motion-element" itemprop="description">收集整理了IT方面的视频教程，需要视频课程请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-课程介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 课程介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-课程视频及源码获取联系方式"><span class="nav-number">2.</span> <span class="nav-text">2. 课程视频及源码获取联系方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-项目总体介绍和背景"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 项目总体介绍和背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-数据特点分析、清洗、加工成表和数据集的准备"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 数据特点分析、清洗、加工成表和数据集的准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-离线推荐模块的开发"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 离线推荐模块的开发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-Kafka-spark-Streaming实时推荐模块的开发"><span class="nav-number">2.4.</span> <span class="nav-text">2.3 Kafka+spark Streaming实时推荐模块的开发</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">联系qq:2468847541 或者微信(BigDataAI007)</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
