@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="推荐算法, 个性化，机器学习，项目实战，实时处理，spark计算框架," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="是一套系统且具有很强实战性的Spark课程，通俗易懂，由浅入深，基于企业项目环境，深度剖析和讲解Spark。本课程涵盖了Spark Core、Spark SQL、Spark Streaming、Spark Mllib以及Spark运维与监控、Spark相关项目等所有Spark核心内容，最后以企业级项目案例来详细讲解Spark并带领大家完成从理论到实战的进阶！ 链接详情：http://www.xue">
+<meta name="keywords" content="推荐算法, 个性化，机器学习，项目实战，实时处理，spark计算框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark全面精讲（基于Spark2版本+含Spark调优+超多案例）">
+<meta property="og:url" content="http://yoursite.com/2017/10/29/spark-complete-key-project-course/index.html">
+<meta property="og:site_name" content="BigData &amp;&amp; AI">
+<meta property="og:description" content="是一套系统且具有很强实战性的Spark课程，通俗易懂，由浅入深，基于企业项目环境，深度剖析和讲解Spark。本课程涵盖了Spark Core、Spark SQL、Spark Streaming、Spark Mllib以及Spark运维与监控、Spark相关项目等所有Spark核心内容，最后以企业级项目案例来详细讲解Spark并带领大家完成从理论到实战的进阶！ 链接详情：http://www.xue">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/course9-xt-spark.png">
+<meta property="og:image" content="http://yoursite.com/images/wechat.png">
+<meta property="og:updated_time" content="2017-11-05T08:33:59.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spark全面精讲（基于Spark2版本+含Spark调优+超多案例）">
+<meta name="twitter:description" content="是一套系统且具有很强实战性的Spark课程，通俗易懂，由浅入深，基于企业项目环境，深度剖析和讲解Spark。本课程涵盖了Spark Core、Spark SQL、Spark Streaming、Spark Mllib以及Spark运维与监控、Spark相关项目等所有Spark核心内容，最后以企业级项目案例来详细讲解Spark并带领大家完成从理论到实战的进阶！ 链接详情：http://www.xue">
+<meta name="twitter:image" content="http://yoursite.com/images/course9-xt-spark.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/29/spark-complete-key-project-course/"/>
+
+
+
+
+
+  <title>Spark全面精讲（基于Spark2版本+含Spark调优+超多案例） | BigData && AI</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BigData && AI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人工智能和大数据自学课程</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/29/spark-complete-key-project-course/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="联系qq:2468847541 或者微信(BigDataAI007)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigData && AI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spark全面精讲（基于Spark2版本+含Spark调优+超多案例）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T20:12:59+08:00">
+                2017-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/人工智能之大数据工具/" itemprop="url" rel="index">
+                    <span itemprop="name">人工智能之大数据工具</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>是一套系统且具有很强实战性的Spark课程，通俗易懂，由浅入深，基于企业项目环境，深度剖析和讲解Spark。本课程涵盖了Spark Core、Spark SQL、Spark Streaming、Spark Mllib以及Spark运维与监控、Spark相关项目等所有Spark核心内容，最后以企业级项目案例来详细讲解Spark并带领大家完成从理论到实战的进阶！<br><img src="../../../../images/course9-xt-spark.png" alt="使用本地图片"></p>
+<p><strong>链接详情：<a href="http://www.xuetuwuyou.com/course/149" target="_blank" rel="external">http://www.xuetuwuyou.com/course/149</a></strong></p>
+<a id="more"></a>
+<h1 id="1-课程介绍"><a href="#1-课程介绍" class="headerlink" title="1. 课程介绍"></a>1. 课程介绍</h1><p>本课程学完以后，相当于有1-2年spark开发经验。可以熟练掌握scala开发，spark core开发，spark streaming开发，sparkSQL开发。能独立完成spark大数据的项目，并对项目进行调优。</p>
+<p>本套课程里涉及了spark与MySQL，Hive，Tachyon ,Kafka, hbase,flume，hadoop等大数据热门技术的交互。且每个技术都有案例演示，属于真正意义上的大数据的开发。</p>
+<h1 id="2-课程视频及源码获取联系方式"><a href="#2-课程视频及源码获取联系方式" class="headerlink" title="2. 课程视频及源码获取联系方式"></a>2. 课程视频及源码获取联系方式</h1><p>收集整理了人工智能和大数据方面的项目实战类的视频教程，需要视频请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系，可以帮您拿到课程。</p>
+<p><img src="../../../../images/wechat.png" alt="使用本地图片"></p>
+<h2 id="2-1-项目总体介绍和背景"><a href="#2-1-项目总体介绍和背景" class="headerlink" title="2.1 项目总体介绍和背景"></a>2.1 项目总体介绍和背景</h2><p><strong>项目总体介绍和背景</strong></p>
+<p>第一阶段：附赠Scala语言培训课程，加量不加价（2017.7.31新增）</p>
+<p>1-01、scala与Java做对比</p>
+<p>1-02、多门语言对比和编译器安装</p>
+<p>1-03、开发第一个scala的程序</p>
+<p>1-04、idea工具安装</p>
+<p>1-05、使用IDEA创建项目和项目打包</p>
+<p>1-06、变量的申明</p>
+<p>1-07、条件表达式和块表达式</p>
+<p>1-08、循环-while和for</p>
+<p>1-09、调用方法和函数</p>
+<p>1-10、scala方法的声明</p>
+<p>1-11、函数和方法的区别</p>
+<p>1-12、体会函数式编程</p>
+<p>1-13、用Java去解释函数式编程</p>
+<p>2-14、前面知识回顾</p>
+<p>2-15、创建定长数组</p>
+<p>2-16、创建边长数组</p>
+<p>2-17、数组的遍历</p>
+<p>2-18、数组常见的算法</p>
+<p>2-19、Map集合操作</p>
+<p>2-20、元组操作</p>
+<p>2-21、list和Array数组</p>
+<p>2-22、List集合的补充</p>
+<p>2-23、综合练习</p>
+<p>2-24、Set集合</p>
+<p>2-25、lazy特性</p>
+<p>2-26、类的定义</p>
+<p>2-27、主构造器</p>
+<p>2-28、辅助构造器</p>
+<p>2-29、对象，伴生对象</p>
+<p>2-30、apply方法</p>
+<p>2-31、应用程序对象</p>
+<p>2-32、抽象和继承</p>
+<p>2-33、Trait</p>
+<p>2-34、模式匹配</p>
+<p>2-35、关于字符串的使用</p>
+<p>2-36、样例类</p>
+<p>2-37、Option类的使用</p>
+<p>2-38、偏函数</p>
+<p>3-39、curring</p>
+<p>3-40、隐式参数</p>
+<p>3-41、隐式转换发生的时机1</p>
+<p>3-42、隐式转换案例演示（1）</p>
+<p>3-43、隐式转换案例演示（2）</p>
+<p>3-44、隐式转换发生时机2</p>
+<p>3-45、上界</p>
+<p>3-46、下界</p>
+<p>3-47、视图边界</p>
+<p>3-48、协变</p>
+<p>3-49、逆变</p>
+<p>3-50、知识归纳</p>
+<p>3-51、案例需求</p>
+<p>3-52、案例代码演示</p>
+<p>4-53、Akka基本概念</p>
+<p>4-54、Akka的简单案例演示</p>
+<p>4-55、综合案例需求分析</p>
+<p>4-56、综合案例代码演示</p>
+<p>第二阶段、Spark core深度剖析</p>
+<p>第00课、课程特色和学习方式</p>
+<p>第1课、Spark概述（四大特性）</p>
+<p>第2课、Spark快速使用</p>
+<p>第3课、什么是RDD？ </p>
+<p>第4课、Spark架构 </p>
+<p>第5课、linux环境准备（虚拟机，linux） </p>
+<p>第6课、hadoop环境准备 </p>
+<p>第7课、Spark环境准备 </p>
+<p>第8课、Spark开发环境搭建（java，scala）</p>
+<p>第8课、Spark开发环境搭建-maven打包（第8节补充） </p>
+<p>第9课、Spark任务提交</p>
+<p>第10课、Historyserver服务配置<br>第11课、RDD的创建方式<br>第12课、Transformation和action原理剖析<br>第13课、map，filter，flatMap算子演示（java版）<br>第14课、groupbykey,reduceByKey,sortByKey算子演示（java版）<br>第15课、join,cogroup,union算子演示（java版本）<br>第16课、Intersection，Distinct，Cartesian算子演示（java版本）<br>第17课、mapPartitions，reparation，coalesce算子演示（java版）<br>第18课、sample,aggregateBykey算子演示（java版本）<br>第19课、mapPartitionsWithIndex,repartitionAndSortWithinPartitions算子演示（java版）<br>第20课、action算子演示（java版）<br>第21课、map,filter,flatMap,groupByKey,reduceByKey,groupByKey,sortByKey算子演示(scala版)<br>第22课、join,cogroup,union,intersection,distinct,cartesian算子演示(scan版)<br>第23课、mapPartitions,reparition,coalesce,sample,aggregateByKey算子演示（scala版<br>第24课、mapPartitionsWithIndex,repartitionAndSortWithinPartitions算子演示（scala版）<br>第25课、RDD持久化(Tachyon)<br>第26课、共享变量(广播变量,累加变量)<br>第27课、Spark on YARN模式(cluster,client)<br>第28课、窄依赖和宽依赖<br>第29课、Shuffle原理剖析<br>第30课、stage划分原理剖析<br>第31课、Spark任务调度<br>第32课、综合案例一TopN（scala)<br>第33课、综合案例二日志分析上(scala)<br>第33课、综合案例二日志分析下(scala)<br>第34课、Spark2内核新特性</p>
+<p>第三阶段、Spark调优</p>
+<p>第35课、Spark调优概述<br>第36课、开发调优(1)<br>第37课、开发调优(2)<br>第38课、开发调优(3)<br>第39课、开发调优(4)<br>第40课、开发调优(5)<br>第41课、开发调优(6)<br>第42课、开发调优(7)<br>第43课、开发调优(8)<br>第44课、开发调优(9)<br>第45课、数据本地化<br>第46课、数据倾斜的原理<br>第47课、数据倾斜解决方案一<br>第48课、数据倾斜解决方案二<br>第49课、数据倾斜解决方案三<br>第50课、数据倾斜解决方案四<br>第51课、数据倾斜解决方案五<br>第52课、数据倾斜解决方案六<br>第53课、数据倾斜解决方案七<br>第54课、shuffle调优<br>第55课、Spark资源模型（内存管理）<br>第56课、资源调优<br>第57课、Spark JVM调优(1)<br>第58课、Spark JVM调优(2)<br>第59课、Spark JVM调优(3)<br>第60讲、Spark JVM调优(4)<br>第61课、Spark JVM调优(5)<br>第62课、Spark调优总结 </p>
+<p>第四阶段、Spark SQL精讲<br>第63课、SparkSQL前世今生<br>第64课、DataFrame使用<br>第65课、reflection方式将RDD转换成DataFrame<br>第66课、Programmatically方式将RDD转换成DataFrame<br>第67课、DataFreme VS RDD<br>第68课、数据源之数据load和save<br>第69课、parquet文件操作<br>第70课、数据源之json<br>第71课、数据源之JDBC<br>第72课、数据源之Hive table-hive环境搭建<br>第73课、数据源之Hive table-spark环境集成<br>第74课、数据源之Hive table-使用<br>第75课、数据源之HBase环境准备<br>第76课、数据源之HBase<br>第77课、Thriftserver使用<br>第78课、UDF开发<br>第79课、UADF开发<br>第80课、开窗函数<br>第81课、groupBy和agg函数使用<br>第82课、综合案例一（日志分析）<br>第83课、综合案例二(用户行为分析)-1<br>第84课、综合案例二(用户行为分析)-2<br>第85课、综合案例二(用户行为分析)-3<br>第86课、综合案例二(用户行为分析)-4<br>第87课、综合案例二(用户行为分析)-5 </p>
+<p>第五阶段 SparkStreaming精讲<br>第88课、SparkStreaming的应用<br>第89课、Spark Streaming工作原理<br>第90课、Spark Streaming入门案例<br>第91课、Streaming VS Mapreduce VS Storm<br>第92课、Spark Streaming HDFS WordCount例子演示<br>第93课、Spark Streaming之updateStateByKey<br>第94课、Spark Streaming之mapWithState<br>第95课、Spark Streaming之transform<br>第96课、Spark Streaming之window操作<br>第97课、Spark Streaming之foreachRDD<br>第98课、Spark Streaming之与kafka和flume集成的两种方式<br>第99课、Spark Streaming之kafka原理介绍<br>第100课、Spark Streaming之kafka集群部署<br>第101课、Spark Streaming之kafka集成<br>第102课、Spark Streaming之flume原理介绍<br>第103课、Spark Streaming之flume搭建<br>第104课、Spark Streaming之flume集成<br>第105课、Spark Streaming之综合案例演示-TopN计算<br>第105课、Spark Streaming之综合案例演示-TopN计算 -补充<br>第106课、Spark Streaming之Driver HA配置 </p>
+<p>第六阶段 Spark2新特性<br>第107课、Spark2新特性之 Spark2设计目标-更容易、更快速、更智能<br>第108课、Spark2新特性之whole-stage code generation和vectorization技术剖析<br>第109课、Spark2 新特性之SparkSession<br>第110课、Spark2新特性之RDD,DataFrema和DataSet关系<br>第111课 、Spark2新特性之DataSet[Untyped] transformations演示(1)<br>第112课、Spark2 新特性之DataSet Actions（2）<br>第113课 、Spark2 新特性之Basic Dataset functions操作（3）<br>第114课、Spark2 新特性之DataSet[Typed] transformations（4）<br>第115课、Spark2新特性之再探RDD,DataFrame 和DataSet关系<br>第116课、Spark2 新特性之 Structured Streaming设计目标<br>第117课、spark2新特性之 Structured Streaming 案例演示<br>第118课、Spark2 新特性之 Structured Streaming原理剖析</p>
+<p>第七阶段、Spark源码导读（2017.8.17新增，加量不加价）<br>1.如何获取Spark源码<br>2.Spark服务的启动流程<br>3.源码执行wordcount的程序<br>4.SparkContext初始化(1)<br>5.SparkContext初始化(2)<br>6.Master的资源分配算法<br>7.Executor向Driver注册<br>8.ExcutorUML图<br>9.知识回顾<br>10.大体过一下任务提交流程<br>11.Stage的划分<br>12.Spark任务调度流程</p>
+<p>第八阶段、实战项目：用户行为分析（2017.8.17新增，加量不加价）<br>1.项目流程介绍<br>2.项目整体概况<br>3.大数据项目的数据来源<br>4.项目背景<br>5.常见概念<br>6.项目需求<br>7.项目整理流程<br>8.从表的设计引发的思考<br>9.获取任务参数<br>10.需求一数据信息<br>11.需求一根据条件筛选会话<br>12.需求一举例说明<br>13.需求一点击下单支付品类TopN(上)<br>14.需求一点击下单支付品类TopN(下)<br>15.需求二需求分析<br>16.需求二数据信息<br>17.需求二获取用户行为数据<br>18.需求二用户表和信息表join<br>19.需求二再次需求分析<br>20.需求二自定义UDF函数<br>21.需求二自定义UDAF函数<br>22.需求二各区域商品点击次数统计<br>23.需求二城市信息表和商品信息表join<br>24.需求二各区域热门商品统计<br>25.需求二把结果持久化导数据库<br>26.需求二总结<br>27.需求三需求分析<br>28.需求三数据信息<br>29.需求三思路梳理<br>30.需求三从kafka获取数据<br>31.需求三对数据进行黑名单过滤<br>32.需求三动态生成黑名单（上）<br>33.需求三动态生成黑名单(下)<br>34.需求三实时统计每天各省份各城市广告点击<br>35.需求三实时统计各省份流量点击<br>36.需求三实时统计广告点击趋势<br>37.需求三总结</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/推荐算法-个性化，机器学习，项目实战，实时处理，spark计算框架/" rel="tag"># 推荐算法, 个性化，机器学习，项目实战，实时处理，spark计算框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/28/bfw-Elasticsearch-development-project-course/" rel="next" title="分布式搜索引擎Elasticsearch开发实战">
+                <i class="fa fa-chevron-left"></i> 分布式搜索引擎Elasticsearch开发实战
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/29/pyspark-analysis-big-data-project-course/" rel="prev" title="基于Python Spark的大数据分析">
+                基于Python Spark的大数据分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="联系qq:2468847541 或者微信(BigDataAI007)" />
+            
+              <p class="site-author-name" itemprop="name">联系qq:2468847541 或者微信(BigDataAI007)</p>
+              <p class="site-description motion-element" itemprop="description">收集整理了IT方面的视频教程，需要视频课程请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-课程介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 课程介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-课程视频及源码获取联系方式"><span class="nav-number">2.</span> <span class="nav-text">2. 课程视频及源码获取联系方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-项目总体介绍和背景"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 项目总体介绍和背景</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">联系qq:2468847541 或者微信(BigDataAI007)</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="推荐算法, 个性化，机器学习，项目实战，实时处理，spark计算框架," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本课程以商业实战项目作为驱动来学习大数据技术在推荐系统项目中的应用。使得学员能够亲身体会大数据项目的使用场景和开发场景及其所产生的商业价值，零距离接触企业实战项目，真正进入大数据开发阶段。 链接详情：http://www.ibeifeng.com/goods-743.html">
+<meta name="keywords" content="推荐算法, 个性化，机器学习，项目实战，实时处理，spark计算框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于大数据技术推荐系统算法案例实战">
+<meta property="og:url" content="http://yoursite.com/2017/10/26/bfw-recommendation-system-project/index.html">
+<meta property="og:site_name" content="BigData &amp;&amp; AI">
+<meta property="og:description" content="本课程以商业实战项目作为驱动来学习大数据技术在推荐系统项目中的应用。使得学员能够亲身体会大数据项目的使用场景和开发场景及其所产生的商业价值，零距离接触企业实战项目，真正进入大数据开发阶段。 链接详情：http://www.ibeifeng.com/goods-743.html">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/course4-bf-rec.png">
+<meta property="og:image" content="http://yoursite.com/images/wechat.png">
+<meta property="og:updated_time" content="2017-11-05T08:05:02.894Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于大数据技术推荐系统算法案例实战">
+<meta name="twitter:description" content="本课程以商业实战项目作为驱动来学习大数据技术在推荐系统项目中的应用。使得学员能够亲身体会大数据项目的使用场景和开发场景及其所产生的商业价值，零距离接触企业实战项目，真正进入大数据开发阶段。 链接详情：http://www.ibeifeng.com/goods-743.html">
+<meta name="twitter:image" content="http://yoursite.com/images/course4-bf-rec.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/26/bfw-recommendation-system-project/"/>
+
+
+
+
+
+  <title>基于大数据技术推荐系统算法案例实战 | BigData && AI</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BigData && AI</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">人工智能和大数据自学课程</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/26/bfw-recommendation-system-project/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="联系qq:2468847541 或者微信(BigDataAI007)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigData && AI">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于大数据技术推荐系统算法案例实战</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T20:12:59+08:00">
+                2017-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/人工智能之推荐算法/" itemprop="url" rel="index">
+                    <span itemprop="name">人工智能之推荐算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本课程以商业实战项目作为驱动来学习大数据技术在推荐系统项目中的应用。使得学员能够亲身体会大数据项目的使用场景和开发场景及其所产生的商业价值，零距离接触企业实战项目，真正进入大数据开发阶段。<br><img src="../../../../images/course4-bf-rec.png" alt="使用本地图片"></p>
+<p><strong>链接详情：<a href="http://www.ibeifeng.com/goods-743.html" target="_blank" rel="external">http://www.ibeifeng.com/goods-743.html</a></strong></p>
+<a id="more"></a>
+<h1 id="1-课程介绍"><a href="#1-课程介绍" class="headerlink" title="1. 课程介绍"></a>1. 课程介绍</h1><p>互联网行业是大数据应用最前沿的阵地，目前主流的大数据技术，包括 hadoop，spark等，全部来自于一线互联网公司。从应用角度讲，大数据在互联网领域主要有三类应用：搜索引擎(比如百度，谷歌等)，广告系统（比如百度凤巢，阿里妈妈等）和推荐系统（比如阿里巴巴天猫推荐，优酷视频推荐等）。</p>
+<p>随着电子商务规模的不断扩大，顾客需要花费大量的时间才能找到自己想买的商品。这种浏览大量无关的信息和产品过程无疑会使淹没在信息过载问题中的消费者不断流失。为了解决这些问题，个性化推荐系统应运而生。个性化推荐系统在提高用户体验的同时，可以大大增加用户购买量，据统计，亚马逊的 30%收入来自于他的推荐引擎。近几年，国内互联网公司也非常重视推荐系统建设，包括阿里巴巴，京东，腾讯等。</p>
+<p>1、基于知名手机厂商线上项目需求进行讲解，快速提升Spark项目经验，解决手机应用实时分析、实时查询需求。</p>
+<p>2、涵盖大数据实时计算一体化的处理流程，包括Flume采集不同来源不同类型的日志（用户行为日志，Nginx日志等等），Kafka消息队列缓存数据并提供高并发的处理以及供后续多种系统消费数据，spark-streaming根据业务需求实时计算数据，Hbase用来存储大数据量和低延迟的访问。</p>
+<p>3、特别注重企业级Spark项目开发的系统性、完整性，拒绝小demo小案例，提升视野与高度。</p>
+<h1 id="2-课程视频及源码获取联系方式"><a href="#2-课程视频及源码获取联系方式" class="headerlink" title="2. 课程视频及源码获取联系方式"></a>2. 课程视频及源码获取联系方式</h1><p>收集整理了人工智能和大数据方面的项目实战类的视频教程，需要视频请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系，可以帮您拿到课程。</p>
+<p><img src="../../../../images/wechat.png" alt="使用本地图片"></p>
+<h2 id="2-1-项目总体介绍和背景"><a href="#2-1-项目总体介绍和背景" class="headerlink" title="2.1 项目总体介绍和背景"></a>2.1 项目总体介绍和背景</h2><p><strong>项目总体介绍和背景</strong></p>
+<p>01-推荐系统与大数据的关系</p>
+<p>101-大数据应用案例</p>
+<p>102-大数据技术框架</p>
+<p>103-推荐系统的技术栈</p>
+<p>104-课程的基础要求和安排</p>
+<p>02-认识推荐系统</p>
+<p>201-什么是推荐系统</p>
+<p>202-推荐系统的应用案例</p>
+<p>203-推荐系统的评测方法</p>
+<p>204-推荐系统的评测指标</p>
+<p>03-推荐系统设计</p>
+<p>301-推荐系统的设计</p>
+<p>302-用户界面的重要性</p>
+<p>04-大数据lambda架构</p>
+<p>401-什么是lambda架构</p>
+<p>402-Lambda架构之批处理层</p>
+<p>403-Lambda架构之实时处理层</p>
+<p>404-Lambda架构之服务层</p>
+<p>405-大数据平台快速部署-实践</p>
+<p>406-配置Mysql和Redis-实践</p>
+<p>407-安装Kafka-实践</p>
+<p>408-安装测试Spark-实践</p>
+<p>05-用户画像系统</p>
+<p>501-什么是用户画像</p>
+<p>502-用户画像的数学描述</p>
+<p>503-用户画像系统流程</p>
+<p>504-用户画像系统架构</p>
+<p>505-用户标签使用案例</p>
+<p>506-算法和模型的评价</p>
+<p>507-SparkML代码实现</p>
+<p>508-代码实例1之模型训练及参数设置-实践</p>
+<p>509-代码实例1之参数设置及模型测试-实践</p>
+<p>510-代码实例2之使用管道</p>
+<p>511-代码实例2之使用管道-实践</p>
+<p>512-代码实例3之模型调优</p>
+<p>513-代码示例3之模型调优-实践</p>
+<p>514-代码示例4之模型调优-实践</p>
+<p>515-用户画像系统应用</p>
+<p>06-推荐算法</p>
+<p>601-推荐模型构建流程</p>
+<p>602-推荐算法概述</p>
+<p>603_基于协同过滤的推荐算法</p>
+<p>604_相似度的计算</p>
+<p>605_基于模型的方法</p>
+<p>606_协同过滤的实现</p>
+<p>607-推荐系统冷启动问题</p>
+<p>608-推荐案例实践准备</p>
+<p>609-推荐案例IDE环境配置-实践</p>
+<p>07-Mahout推荐算法实战</p>
+<p>701-Mahout概述</p>
+<p>702_Mahout推荐系统组件</p>
+<p>703-Mahout推荐系统评估</p>
+<p>704-Mahout开发环境部署-实践</p>
+<p>705-Mahout推荐实例1之偏好数组-实践</p>
+<p>706-Mahout推荐实例2之数据模型-实践</p>
+<p>707-Mahout推荐实例3之构建模型-实践</p>
+<p>708-Mahout推荐实例4之模型评估1-实践</p>
+<p>709-Mahout推荐实例5之模型评估2-实践</p>
+<p>710-Mahout推荐实例6之电影推荐1-实践</p>
+<p>711-Mahout推荐实例6之电影推荐2-实践</p>
+<p>712-Mahout推荐实例6之电影推荐3-实践</p>
+<p>713-Mahout推荐实例7之图书推荐1-实践</p>
+<p>714-Mahout推荐实例7之图书推荐2-实践</p>
+<p>715-Mahout推荐实例7之图书推荐3-实践</p>
+<p>716-Mahout推荐实战-实践</p>
+<p>08-Spark推荐算法实战</p>
+<p>801-Mahout推荐实战补充-实践</p>
+<p>802-Spark MLlib概述</p>
+<p>803-MLlib推荐算法介绍</p>
+<p>804-MLlib推荐算法实战</p>
+<p>805-MLlib推荐实例之定义解析函数-实践</p>
+<p>806_MLlib推荐实例之探索DataFrame-实践</p>
+<p>807-MLlib推荐实例之ALS模型推荐-实践</p>
+<p>808-MLlib推荐实例之模型评估-实践</p>
+<p>809-推荐实战之开发环境准备-实践</p>
+<p>810-推荐实战之实现用户评分函数-实践</p>
+<p>811-推荐实战之实现计算RMSE函数-实践</p>
+<p>812-推荐实战之参数设置及数据加载-实践</p>
+<p>813-推荐实战之用户调查及数据拆分-实践</p>
+<p>814-推荐实战之模型训练及评估-实践</p>
+<p>815-推荐实战之个性化推荐-实践</p>
+<p>816-推荐实战之测试部署-实践</p>
+<p>09-推荐系统与Lambda架构</p>
+<p>901-推荐系统与Lambda架构</p>
+<p>902_推荐系统数据收集背景</p>
+<p>903-FlumeNG数据收集系统</p>
+<p>904-Web日志数据采集Flume部署配置-实践</p>
+<p>905-Web日志数据采集Flume运行测试-实践</p>
+<p>906_Sqoop数据收集工具</p>
+<p>907-Sqoop收集账户数据-实践</p>
+<p>908-HDFS数据存储系统</p>
+<p>909-上传知识库文档到HDFS</p>
+<p>910-HBase数据库存储系统</p>
+<p>911-加载并访问Hbase的评分数据-实践</p>
+<p>912-推荐系统综合实战</p>
+<p>913-推荐系统离线层实现-实践</p>
+<p>914-推荐系统服务层实现-实践</p>
+<p>915-推荐系统实时层实现-实践</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/推荐算法-个性化，机器学习，项目实战，实时处理，spark计算框架/" rel="tag"># 推荐算法, 个性化，机器学习，项目实战，实时处理，spark计算框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/25/recommended-system-algorithm/" rel="next" title="企业级实战：Spark离线和实时电影推荐系统">
+                <i class="fa fa-chevron-left"></i> 企业级实战：Spark离线和实时电影推荐系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/27/bfw-storm-project-course/" rel="prev" title="基于Storm流计算天猫双十一作战室项目实战">
+                基于Storm流计算天猫双十一作战室项目实战 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.png"
+                alt="联系qq:2468847541 或者微信(BigDataAI007)" />
+            
+              <p class="site-author-name" itemprop="name">联系qq:2468847541 或者微信(BigDataAI007)</p>
+              <p class="site-description motion-element" itemprop="description">收集整理了IT方面的视频教程，需要视频课程请加微信（BigDataAI007） 如本站没有您想要的视频，请微信联系</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-课程介绍"><span class="nav-number">1.</span> <span class="nav-text">1. 课程介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-课程视频及源码获取联系方式"><span class="nav-number">2.</span> <span class="nav-text">2. 课程视频及源码获取联系方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-项目总体介绍和背景"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 项目总体介绍和背景</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">联系qq:2468847541 或者微信(BigDataAI007)</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
